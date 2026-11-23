@@ -1,7 +1,8 @@
-Coloca aqui las imagenes de los proyectos con estos nombres (JPG o PNG, mejor en 1280 px de ancho):
+Imagenes de los proyectos. Cada proyecto usa tres capturas con este patron:
 
-opale-1.jpg, opale-2.jpg, opale-3.jpg
-storyframe-1.jpg, storyframe-2.jpg, storyframe-3.jpg
-nosotros-1.jpg, nosotros-2.jpg, nosotros-3.jpg
+  <slug>-1.jpg  escritorio (1280 x 800)
+  <slug>-2.jpg  otra seccion o pagina (1280 x 1000)
+  <slug>-3.jpg  movil (430 x 932)
 
+El slug de cada proyecto esta en src/data/profile.ts, en shots('<slug>').
 La foto de perfil va en la carpeta public con el nombre yago-portrait.jpg

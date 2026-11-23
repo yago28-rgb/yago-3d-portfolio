@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import type { CSSProperties } from 'react';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import LiveProjectButton from './LiveProjectButton';
+import LiveProjectButton, { CodeButton } from './LiveProjectButton';
 import { PROJECTS, type Project } from '../data/profile';
 
 const RADIUS = 'rounded-[40px] sm:rounded-[50px] md:rounded-[60px]';
@@ -21,15 +21,16 @@ function ProjectCard({ project, index, total }: ProjectCardProps) {
     offset: ['start start', 'end start'],
   });
 
-  // Cards further back settle at a slightly smaller scale.
-  const targetScale = 1 - (total - 1 - index) * 0.03;
+  // Cards further back settle at a slightly smaller scale (capped so long lists stay readable).
+  const targetScale = 1 - Math.min(total - 1 - index, 4) * 0.03;
   const scale = useTransform(scrollYProgress, [0, 1], [1, targetScale]);
 
   // Per-card stacking offset, consumed by the sticky `top` classes below.
+  // Cycles every 5 cards so the offset never grows past the viewport.
   const stackStyle = {
     scale,
     transformOrigin: 'top center',
-    '--stack-top': `${index * 28}px`,
+    '--stack-top': `${(index % 5) * 28}px`,
   } as unknown as CSSProperties;
 
   const [left1, left2, right] = project.images;
@@ -61,7 +62,10 @@ function ProjectCard({ project, index, total }: ProjectCardProps) {
               </h3>
             </div>
           </div>
-          <LiveProjectButton url={project.url} />
+          <div className="flex flex-wrap items-center gap-3">
+            {project.repo && <CodeButton url={project.repo} />}
+            {(project.url || !project.repo) && <LiveProjectButton url={project.url} />}
+          </div>
         </div>
 
         <p

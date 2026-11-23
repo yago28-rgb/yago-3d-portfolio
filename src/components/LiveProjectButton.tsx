@@ -1,4 +1,4 @@
-import { ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight, Github } from 'lucide-react';
 
 interface LiveProjectButtonProps {
   url?: string;
@@ -6,6 +6,20 @@ interface LiveProjectButtonProps {
 
 const BASE =
   'inline-flex items-center gap-2 rounded-full border-2 border-[#D7E2EA] px-8 py-3 text-sm font-medium uppercase tracking-widest text-[#D7E2EA] transition-colors duration-200 sm:px-10 sm:py-3.5 sm:text-base';
+
+export function CodeButton({ url }: { url: string }) {
+  return (
+    <a
+      href={url}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`${BASE} hover:bg-[#D7E2EA]/10`}
+    >
+      Code
+      <Github size={18} aria-hidden="true" />
+    </a>
+  );
+}
 
 export default function LiveProjectButton({ url }: LiveProjectButtonProps) {
   if (!url) {

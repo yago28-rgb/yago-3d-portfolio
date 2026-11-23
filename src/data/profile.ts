@@ -53,41 +53,230 @@ export interface Project {
   description: string;
   // Public link, if the project is online. Leave undefined otherwise.
   url?: string;
+  // Source code on GitHub, if public.
+  repo?: string;
   // Three images: two stacked on the left, one tall on the right.
   images: [string, string, string];
 }
 
-export const PROJECTS: Project[] = [
+const GH = 'https://github.com/yago28-rgb/';
+
+// Images follow the pattern /projects/<slug>-1.jpg, -2.jpg, -3.jpg (desktop, section, mobile).
+const shots = (slug: string): [string, string, string] => [
+  `/projects/${slug}-1.jpg`,
+  `/projects/${slug}-2.jpg`,
+  `/projects/${slug}-3.jpg`,
+];
+
+type ProjectInput = Omit<Project, 'number'>;
+
+const LIST: ProjectInput[] = [
+  // ── Websites for businesses ──
   {
-    number: '01',
+    category: 'Web Design',
+    name: 'NEPO Café',
+    status: 'Website',
+    description:
+      'Multi-page website for NEPO, a specialty coffee house in Pozuelo de Alarcón: editorial design, menu, about and visit pages, and local SEO. Plain HTML, CSS and JavaScript with no build step.',
+    repo: `${GH}nepo-cafe`,
+    images: shots('nepo'),
+  },
+  {
+    category: 'Web Design',
+    name: 'Villa Mercedes',
+    status: 'Website',
+    description:
+      'Static website for the Villa Mercedes holiday rental in Spanish, English and French, generated with a small Python build script and optimised for SEO.',
+    repo: `${GH}villa-mercedes-web`,
+    images: shots('villa-mercedes'),
+  },
+  {
     category: 'Branding & Web',
     name: 'Opale',
     status: 'In development',
     description:
       'Brand identity and website for Opale, a specialty coffee and matcha café in central Madrid. Includes a full brand document and a 3D WebGL facade scene built with Three.js.',
-    images: ['/projects/opale-1.jpg', '/projects/opale-2.jpg', '/projects/opale-3.jpg'],
+    images: shots('opale'),
   },
   {
-    number: '02',
+    category: 'Web Design',
+    name: 'Cadelo',
+    status: 'Concept',
+    description:
+      'Website concept for Cadelo, a fusion restaurant in Santander with a Michelin Bib Gourmand: menu, gallery and contact pages built with Next.js.',
+    images: shots('cadelo'),
+  },
+  {
     category: 'Web Redesign',
     name: 'Storyframe Studio',
     status: 'Proposal',
     description:
       'Redesign proposal for the website of Storyframe Studio, a photography studio in Madrid. Presented as a mockup with placeholder photos until the final images are available.',
-    images: [
-      '/projects/storyframe-1.jpg',
-      '/projects/storyframe-2.jpg',
-      '/projects/storyframe-3.jpg',
-    ],
+    images: shots('storyframe'),
   },
   {
-    number: '03',
+    category: 'Branding & Web',
+    name: 'ESTHELA',
+    status: 'Concept',
+    description:
+      'A digital archive dedicated to perfumery rather than a perfume shop: brand, editorial pages for perfumes and houses, and a custom logo system. Built with Next.js and TypeScript.',
+    repo: `${GH}fragance-lab`,
+    images: shots('esthela'),
+  },
+  {
+    category: 'E-commerce',
+    name: 'Racket Lab',
+    status: 'In development',
+    description:
+      'Luxury e-commerce for rackets with an editorial home page, a video-led hero and a real-time WebGL centre court. Next.js, TypeScript and SEO.',
+    repo: `${GH}Racket-Lab`,
+    images: shots('racket-lab'),
+  },
+
+  // ── Web apps ──
+  {
+    category: 'Web App',
+    name: 'Taflox',
+    status: 'Private tool',
+    description:
+      'Management and accounting app for the owner of several taxi licences in Madrid: upload invoices, read them with a local OCR engine (PaddleOCR, no paid AI APIs), review them side by side and export to Excel.',
+    repo: `${GH}flota-taxis`,
+    images: shots('flota'),
+  },
+  {
+    category: 'AI & Finance',
+    name: 'Verdant Capital',
+    status: 'Personal project',
+    description:
+      'Autonomous paper-trading platform: a multi-agent system that watches real markets, analyses news and fundamentals, validates strategies out of sample and manages a 100% simulated portfolio. Python backend, web dashboard and Docker.',
+    repo: `${GH}aifund`,
+    images: shots('aifund'),
+  },
+  {
     category: 'Web App',
     name: 'Nosotros',
     status: 'Online',
     description:
       'Web app for sharing messages inside groups linked by a code. It started as an app for couples and is now used by friends and family. A redesign and a mobile version are in progress.',
     url: 'https://nosotros-peach.vercel.app',
-    images: ['/projects/nosotros-1.jpg', '/projects/nosotros-2.jpg', '/projects/nosotros-3.jpg'],
+    images: shots('nosotros'),
+  },
+  {
+    category: 'Web App',
+    name: 'Weyvy',
+    status: 'Personal project',
+    description:
+      'Fitness app with workouts, progress and charts. React, TypeScript, Vite, Tailwind and Recharts, with data stored locally and a Supabase schema ready.',
+    repo: `${GH}weyvy`,
+    images: shots('weyvy'),
+  },
+  {
+    category: 'Mobile App (PWA)',
+    name: 'Panel DAW+DAM',
+    status: 'In use',
+    description:
+      'Installable app to keep track of exams and assignments at ESIC. Works offline as a PWA, in a single HTML file.',
+    repo: `${GH}esic-tareas`,
+    images: shots('esic-tareas'),
+  },
+  {
+    category: 'Mobile App (PWA)',
+    name: 'Gastos ESIC',
+    status: 'In use',
+    description:
+      'Installable expense tracker that works offline as a PWA: categories, monthly summary and movements, in a single HTML file.',
+    repo: `${GH}gastosesic`,
+    images: shots('gastosesic'),
+  },
+  {
+    category: 'Web App',
+    name: 'Mis gastos',
+    status: 'In use',
+    description:
+      'Expense tracker with an iOS-style design: monthly overview, budget, categories and movements.',
+    repo: `${GH}mis-gastos`,
+    images: shots('mis-gastos'),
+  },
+  {
+    category: 'Dashboard',
+    name: 'Mercados del día',
+    status: 'Personal project',
+    description:
+      'Daily summary of stocks, investments and cryptocurrencies with charts and sources, generated automatically every day.',
+    images: shots('crypto'),
+  },
+
+  // ── Games and 3D ──
+  {
+    category: '3D Game',
+    name: 'Backrooms: Level 0',
+    status: 'Playable',
+    description:
+      'First-person psychological survival horror set in Level 0 of the Backrooms. Every 3D asset is generated in Blender 5.1 with Python scripts and runs in the browser with Three.js.',
+    repo: `${GH}backrooms`,
+    images: shots('backrooms'),
+  },
+  {
+    category: '3D Game',
+    name: 'Sombras de Ashvern',
+    status: 'In development',
+    description:
+      'Dark fantasy 3D game that runs in the browser, with environments and assets built in Blender through a scripted pipeline and rendered with Three.js.',
+    repo: `${GH}sombras-de-ashvern`,
+    images: shots('sombras-de-ashvern'),
+  },
+  {
+    category: 'Game',
+    name: 'CarGo',
+    status: 'Personal project',
+    description: 'Browser car game with a catalogue of 100 cars, built in HTML, CSS and JavaScript.',
+    images: shots('car-go'),
+  },
+  {
+    category: 'Interactive Web',
+    name: 'Hollowmere',
+    status: 'Experiment',
+    description:
+      'Interactive story of a king who sold his crown to the moon and the long descent to bring the light home, told as a scroll-driven interactive web experience.',
+    images: shots('hollowmere'),
+  },
+  {
+    category: '3D Web Experience',
+    name: 'Medusa JF-4',
+    status: 'Experiment',
+    description: 'A robotic jellyfish you can take apart piece by piece, built live in Three.js.',
+    images: shots('medusa'),
+  },
+  {
+    category: 'Interactive Web',
+    name: 'Try the Look',
+    status: 'Experiment',
+    description:
+      'Fashion runway with six looks styled head to toe. Explore the runway, isolate a look and tap a pin to see each piece.',
+    images: shots('closet'),
+  },
+
+  // ── Branding and academic ──
+  {
+    category: 'Branding',
+    name: 'Mecanautas',
+    status: 'Brand identity',
+    description:
+      'Brand identity for a YouTube channel: logo system, brand board, banner, avatar and thumbnail template.',
+    images: shots('mecanautas'),
+  },
+  {
+    category: 'Final Project · DAW',
+    name: 'Origen',
+    status: 'Academic',
+    description:
+      'My final degree project: an immersive 3D website for a specialty coffee shop with a first-person walkthrough, a model baked in Blender, and a PHP and SQL back end.',
+    repo: `${GH}cafeteria-origen-tfg`,
+    images: shots('cafeteria-origen'),
   },
 ];
+
+export const PROJECTS: Project[] = LIST.map((p, i) => ({
+  ...p,
+  number: String(i + 1).padStart(2, '0'),
+}));
